@@ -1,0 +1,38 @@
+package com.example.simple_marketplace.controller;
+
+import com.example.simple_marketplace.dto.ProductDto;
+import com.example.simple_marketplace.dto.ResponseDto;
+import com.example.simple_marketplace.dto.SimpleCrud;
+import com.example.simple_marketplace.service.ProductService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("product/")
+@RequiredArgsConstructor
+public class ProductController implements SimpleCrud<ProductDto,Integer> {
+    private  final ProductService productService;
+    @Override
+    @PostMapping("create")
+    public ResponseDto<ProductDto> create(@RequestBody ProductDto dto) {
+        return this.productService.create(dto);
+    }
+
+    @Override
+    @GetMapping("get/{id}")
+    public ResponseDto<ProductDto> get(@PathVariable Integer id) {
+        return  this.productService.get(id);
+    }
+
+    @Override
+    @PutMapping("update/{id}")
+    public ResponseDto<ProductDto> update(@RequestBody ProductDto dto,@PathVariable Integer id) {
+        return this.productService.update(dto, id);
+    }
+
+    @Override
+    @DeleteMapping("delete/{id}")
+    public ResponseDto<ProductDto> delete(@PathVariable Integer id) {
+        return this.productService.delete(id);
+    }
+}
