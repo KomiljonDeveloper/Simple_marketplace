@@ -1,6 +1,7 @@
 package com.example.simple_marketplace.dto;
 
 import com.example.simple_marketplace.modul.Image;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,6 +14,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserDto {
 
     private Integer id;

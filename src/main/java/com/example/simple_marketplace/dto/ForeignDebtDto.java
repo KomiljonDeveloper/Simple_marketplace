@@ -1,5 +1,6 @@
 package com.example.simple_marketplace.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
@@ -13,6 +14,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ForeignDebtDto {
     private Integer id;
     @NotBlank(message = "Company name is cannot be empty or null!")

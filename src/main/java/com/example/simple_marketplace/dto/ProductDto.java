@@ -1,5 +1,6 @@
 package com.example.simple_marketplace.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ProductDto {
     private Integer productId;
     @NotBlank(message = "Prod name name is cannot be empty or null!")
