@@ -4,6 +4,7 @@ import com.example.simple_marketplace.dto.ProductDto;
 import com.example.simple_marketplace.dto.ResponseDto;
 import com.example.simple_marketplace.dto.SimpleCrud;
 import com.example.simple_marketplace.service.ProductService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +15,7 @@ public class ProductController implements SimpleCrud<ProductDto,Integer> {
     private  final ProductService productService;
     @Override
     @PostMapping("create")
-    public ResponseDto<ProductDto> create(@RequestBody ProductDto dto) {
+    public ResponseDto<ProductDto> create(@RequestBody @Valid ProductDto dto) {
         return this.productService.create(dto);
     }
 

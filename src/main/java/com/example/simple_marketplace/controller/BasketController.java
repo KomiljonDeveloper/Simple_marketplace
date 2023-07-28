@@ -4,6 +4,7 @@ import com.example.simple_marketplace.dto.BasketDto;
 import com.example.simple_marketplace.dto.ResponseDto;
 import com.example.simple_marketplace.dto.SimpleCrud;
 import com.example.simple_marketplace.service.BasketService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -12,7 +13,7 @@ public record BasketController(BasketService basketService) implements SimpleCru
 
     @Override
     @PostMapping("/create")
-    public ResponseDto<BasketDto> create(@RequestBody BasketDto dto) {
+    public ResponseDto<BasketDto> create(@RequestBody @Valid BasketDto dto) {
         return this.basketService.create(dto);
     }
 

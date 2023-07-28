@@ -28,6 +28,8 @@ public class User {
     private String passportSeries;
     private String firstAddress;
     private String secondAddress;
+    private String email;
+    private Integer age;
     private Double monthlyPrice;
     @OneToMany
     private List<Loaner> loaners;

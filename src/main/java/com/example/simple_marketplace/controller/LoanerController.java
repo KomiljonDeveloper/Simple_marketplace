@@ -4,6 +4,7 @@ import com.example.simple_marketplace.dto.LoanerDto;
 import com.example.simple_marketplace.dto.ResponseDto;
 import com.example.simple_marketplace.dto.SimpleCrud;
 import com.example.simple_marketplace.service.LoanerService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 public record LoanerController(LoanerService loanerService) implements SimpleCrud<LoanerDto,Integer> {
     @Override
     @PostMapping("create")
-    public ResponseDto<LoanerDto> create(@RequestBody LoanerDto dto) {
+    public ResponseDto<LoanerDto> create(@RequestBody @Valid LoanerDto dto) {
         return this.loanerService.create(dto);
     }
 

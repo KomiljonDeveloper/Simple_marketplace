@@ -4,6 +4,7 @@ import com.example.simple_marketplace.dto.ReportsDto;
 import com.example.simple_marketplace.dto.ResponseDto;
 import com.example.simple_marketplace.dto.SimpleCrud;
 import com.example.simple_marketplace.service.ReportsService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +16,7 @@ public class ReportsController implements SimpleCrud<ReportsDto,Integer> {
     private final ReportsService reportsService;
     @Override
     @PostMapping("create")
-    public ResponseDto<ReportsDto> create(@RequestBody ReportsDto dto) {
+    public ResponseDto<ReportsDto> create(@RequestBody @Valid ReportsDto dto) {
         return this.reportsService.create(dto);
     }
 

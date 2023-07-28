@@ -4,6 +4,7 @@ import com.example.simple_marketplace.dto.CategoryDto;
 import com.example.simple_marketplace.dto.ResponseDto;
 import com.example.simple_marketplace.dto.SimpleCrud;
 import com.example.simple_marketplace.service.CategoryService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +15,7 @@ public class CategoryController implements SimpleCrud<CategoryDto,Integer> {
     private final CategoryService categoryService;
     @Override
     @PostMapping("create")
-    public ResponseDto<CategoryDto> create(@RequestBody CategoryDto dto) {
+    public ResponseDto<CategoryDto> create(@RequestBody @Valid CategoryDto dto) {
         return this.categoryService.create(dto);
     }
 

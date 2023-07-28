@@ -4,6 +4,7 @@ import com.example.simple_marketplace.dto.EmployeesDto;
 import com.example.simple_marketplace.dto.ResponseDto;
 import com.example.simple_marketplace.dto.SimpleCrud;
 import com.example.simple_marketplace.service.EmployeesService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,7 +15,7 @@ public class EmployeesController implements SimpleCrud<EmployeesDto,Integer> {
     private final EmployeesService employeesService;
     @Override
     @PostMapping("create")
-    public ResponseDto<EmployeesDto> create(@RequestBody EmployeesDto dto) {
+    public ResponseDto<EmployeesDto> create(@RequestBody @Valid EmployeesDto dto) {
         return this.employeesService.create(dto);
     }
 

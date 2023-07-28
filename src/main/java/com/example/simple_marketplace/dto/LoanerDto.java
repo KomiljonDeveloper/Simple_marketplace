@@ -1,5 +1,6 @@
 package com.example.simple_marketplace.dto;
 
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 public class LoanerDto {
     private Integer id;
     private Integer basketId;
+    @NotNull(message = "Company name is cannot be empty or null!")
     private Double totalPrice;
     private boolean status;
     private LocalDateTime createdAt;

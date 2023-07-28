@@ -1,5 +1,7 @@
 package com.example.simple_marketplace.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +16,7 @@ import java.util.List;
 public class BasketDto {
     private Integer id;
     private List<ProductDto> products;
+    @NotNull(message = "Prod mass is cannot be null or empty!")
     private Double prod_mass;
     private Double prod_price;
     private Double total_price;

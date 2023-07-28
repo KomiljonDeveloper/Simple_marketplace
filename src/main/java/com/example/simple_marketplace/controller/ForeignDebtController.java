@@ -4,6 +4,7 @@ import com.example.simple_marketplace.dto.ForeignDebtDto;
 import com.example.simple_marketplace.dto.ResponseDto;
 import com.example.simple_marketplace.dto.SimpleCrud;
 import com.example.simple_marketplace.service.ForeignDebtService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +16,7 @@ public class ForeignDebtController implements SimpleCrud<ForeignDebtDto,Integer>
     private final ForeignDebtService foreignDebtService;
     @Override
     @PostMapping("create")
-    public ResponseDto<ForeignDebtDto> create(@RequestBody ForeignDebtDto dto) {
+    public ResponseDto<ForeignDebtDto> create(@RequestBody @Valid ForeignDebtDto dto) {
         return this.foreignDebtService.create(dto);
     }
 

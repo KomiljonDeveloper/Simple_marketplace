@@ -4,12 +4,16 @@ import com.example.simple_marketplace.dto.ReportsDto;
 import com.example.simple_marketplace.dto.ResponseDto;
 import com.example.simple_marketplace.dto.SimpleCrud;
 import com.example.simple_marketplace.dto.UserDto;
+import com.example.simple_marketplace.modul.User;
 import com.example.simple_marketplace.repository.UserRepository;
 import com.example.simple_marketplace.service.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 @Service
 @RequiredArgsConstructor
@@ -18,8 +22,11 @@ public class UserService implements SimpleCrud<UserDto,Integer> {
     private final UserMapper userMapper;
     @Override
     public ResponseDto<UserDto> create(UserDto dto) {
-       try {  dto.setCreatedAt(LocalDateTime.now());
-        this.userRepository.save(this.userMapper.toEntity(dto));
+       try {
+           dto.setCreatedAt(LocalDateTime.now());
+
+
+           this.userRepository.save(this.userMapper.toEntity(dto));
         return ResponseDto.<UserDto>builder()
                 .message("OK")
                 .success(true)
