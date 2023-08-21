@@ -14,6 +14,8 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -120,5 +122,21 @@ public class UserService implements SimpleCrud<UserDto,Integer> {
                     .build();
 
         }
+    }
+
+    public ResponseDto<List<UserDto>> getAll() {
+        List<UserDto> collect = this.userRepository.findAllByDeletedAtIsNull().stream().map(this.userMapper::toDto
+        ).toList();
+        if (!collect.isEmpty()) {
+            return ResponseDto.<List<UserDto>>builder()
+                    .message("OK")
+                    .success(true)
+                    .data(collect)
+                    .build();
+        }
+        return ResponseDto.<List<UserDto>>builder()
+                .message("Users nor found!")
+                .code(-1)
+                .build();
     }
 }

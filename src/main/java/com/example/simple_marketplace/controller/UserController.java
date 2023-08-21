@@ -5,7 +5,12 @@ import com.example.simple_marketplace.dto.SimpleCrud;
 import com.example.simple_marketplace.dto.UserDto;
 import com.example.simple_marketplace.service.UserService;
 import jakarta.validation.Valid;
+import jakarta.validation.metadata.MethodType;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+
+import java.awt.*;
+import java.util.List;
 
 @RequestMapping("users")
 @RestController
@@ -32,5 +37,9 @@ public record UserController(UserService userService) implements SimpleCrud<User
     @DeleteMapping("/delete/{id}")
     public ResponseDto<UserDto> delete(@PathVariable Integer id) {
         return this.userService.delete(id);
+    }
+    @GetMapping(value = "/get-all")
+    public ResponseDto<List<UserDto>> getAll(){
+        return this.userService.getAll();
     }
 }

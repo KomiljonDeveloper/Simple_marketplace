@@ -16,7 +16,6 @@ import java.util.List;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserDto {
-
     private Integer id;
     @NotBlank(message = "Firstname is cannot be null or empty!")
     private String firstName;
@@ -26,21 +25,18 @@ public class UserDto {
     private String middleName;
     @NotBlank(message = "Username is cannot be null or empty!")
     private String username;
-    @NotBlank(message = "Borrow Name is cannot be null or empty!")
     private String borrowName;
     @NotBlank(message = "Phone Number is cannot be null or empty!")
     private String phoneNumber;
-    @NotBlank(message = "Passport Series is cannot be null or empty!")
     private String passportSeries;
     @NotBlank(message = "First address is cannot be null or empty!")
     private String firstAddress;
     @Email(message = "This email is invalid!")
     private String email;
     private String secondAddress;
-    @Max(value = 25,message = "This age is invalid ! age = (15<age<25)")@Min(value = 15,message = "This age is invalid ! age = (15<age<25)")
     private  Integer age;
     @NotNull(message = "Monthly price is cannot be empty or null!")
-    private Double monthlyPrice;
+    private String monthlyPrice;
     private List<LoanerDto> loaners;
     private Image imageId;
     @NotNull(message = "Birthday is cannot be null or empty ")

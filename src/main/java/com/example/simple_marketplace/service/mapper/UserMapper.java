@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 @Mapper(componentModel = "spring",imports = LocalDateTime.class)
 public abstract class UserMapper {
     @Mapping(target = "id",ignore = true)
-    @Mapping(target = "birthday",expression = "java(LocalDateTime.parse(String.format(\"%s 00:00\",dto.getBirthday()),DateTimeFormatter.ofPattern(\"dd/MM/yyyy HH:mm\")))")
     public abstract User toEntity(UserDto dto);
     @Mapping(target = "createdAt",ignore = true)
     @Mapping(target = "updatedAt",ignore = true)

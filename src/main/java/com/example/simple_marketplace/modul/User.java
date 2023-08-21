@@ -30,12 +30,12 @@ public class User {
     private String secondAddress;
     private String email;
     private Integer age;
-    private Double monthlyPrice;
+    private String monthlyPrice;
     @OneToMany
     private List<Loaner> loaners;
     @OneToOne
     private Image imageId;
-    private LocalDateTime birthday;
+    private String birthday;
     private LocalDateTime workingTime;
     private LocalDateTime workingDays;
     private LocalDateTime createdAt;
