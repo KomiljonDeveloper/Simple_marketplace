@@ -6,6 +6,7 @@ import com.example.simple_marketplace.dto.UserDto;
 import com.example.simple_marketplace.service.UserService;
 import jakarta.validation.Valid;
 import jakarta.validation.metadata.MethodType;
+import org.springframework.data.domain.Page;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,4 +43,11 @@ public record UserController(UserService userService) implements SimpleCrud<User
     public ResponseDto<List<UserDto>> getAll(){
         return this.userService.getAll();
     }
+    @GetMapping("/get-all-page")
+    public ResponseDto<Page<UserDto>> getAllByPage(@RequestParam Integer page,@RequestParam Integer size){
+       return this.userService.getAllByPage(page,size);
+    }
+
+
+
 }

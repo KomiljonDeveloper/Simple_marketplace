@@ -8,6 +8,8 @@ import com.example.simple_marketplace.modul.User;
 import com.example.simple_marketplace.repository.UserRepository;
 import com.example.simple_marketplace.service.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -137,6 +139,22 @@ public class UserService implements SimpleCrud<UserDto,Integer> {
         return ResponseDto.<List<UserDto>>builder()
                 .message("Users nor found!")
                 .code(-1)
+                .build();
+    }
+
+    public ResponseDto<Page<UserDto>> getAllByPage(Integer page, Integer size) {
+        Page<User> userPage = this.userRepository.findAllByDeletedAtIsNull(PageRequest.of(page, size));
+        Page<UserDto> map = userPage.map(this.userMapper::toDto);
+        if (map.isEmpty()) {
+            return ResponseDto.<Page<UserDto>>builder()
+                    .message("Error in pagination!")
+                    .code(-5)
+                    .build();
+        }
+        return ResponseDto.<Page<UserDto>>builder()
+                .message("Ok")
+                .success(true)
+                .data(map)
                 .build();
     }
 }
