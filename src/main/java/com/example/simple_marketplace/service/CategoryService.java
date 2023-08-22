@@ -1,11 +1,15 @@
 package com.example.simple_marketplace.service;
 
+import com.example.simple_marketplace.dto.BasketDto;
 import com.example.simple_marketplace.dto.CategoryDto;
 import com.example.simple_marketplace.dto.ResponseDto;
 import com.example.simple_marketplace.dto.SimpleCrud;
+import com.example.simple_marketplace.modul.Category;
 import com.example.simple_marketplace.repository.CategoryRepository;
 import com.example.simple_marketplace.service.mapper.CategoryMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -106,5 +110,21 @@ public class CategoryService implements SimpleCrud<CategoryDto, Integer> {
                     .build();
 
         }
+    }
+
+    @Override
+    public ResponseDto<Page<CategoryDto>> getAllByPage(Integer page, Integer size) {
+        Page<CategoryDto> map = this.categoryRepository.findAllByDeletedAtIsNull(PageRequest.of(page, size)).map(this.categoryMapper::toDto);
+        if (map.isEmpty()) {
+            return  ResponseDto.<Page<CategoryDto>>builder()
+                    .code(-1)
+                    .message("Categories are not found!")
+                    .build();
+        }
+        return ResponseDto.<Page<CategoryDto>>builder()
+                .message("OK")
+                .success(true)
+                .data(map)
+                .build();
     }
 }

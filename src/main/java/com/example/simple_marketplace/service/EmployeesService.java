@@ -6,6 +6,8 @@ import com.example.simple_marketplace.dto.SimpleCrud;
 import com.example.simple_marketplace.repository.EmployeesRepository;
 import com.example.simple_marketplace.service.mapper.EmployeesMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -109,5 +111,23 @@ public class EmployeesService implements SimpleCrud<EmployeesDto, Integer> {
                     .code(-1)
                     .build();
         }
+    }
+
+    @Override
+    public ResponseDto<Page<EmployeesDto>> getAllByPage(Integer page, Integer size) {
+        Page<EmployeesDto> map = this.employeesRepository.findAllByPage(PageRequest.of(page, size)).map(this.employeesMapper::toDto);
+        if (map.isEmpty()) {
+            return  ResponseDto.<Page<EmployeesDto>>builder()
+                    .code(-1)
+                    .message("Employees are not found!")
+                    .build();
+        }
+        return ResponseDto.<Page<EmployeesDto>>builder()
+                .message("OK")
+                .success(true)
+                .data(map)
+                .build();
+
+
     }
 }

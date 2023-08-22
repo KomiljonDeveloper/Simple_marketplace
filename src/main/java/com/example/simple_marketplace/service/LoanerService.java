@@ -1,11 +1,14 @@
 package com.example.simple_marketplace.service;
 
+import com.example.simple_marketplace.dto.ForeignDebtDto;
 import com.example.simple_marketplace.dto.LoanerDto;
 import com.example.simple_marketplace.dto.ResponseDto;
 import com.example.simple_marketplace.dto.SimpleCrud;
 import com.example.simple_marketplace.repository.LoanerRepository;
 import com.example.simple_marketplace.service.mapper.LoanerMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -103,5 +106,22 @@ public class LoanerService implements SimpleCrud<LoanerDto, Integer> {
                     .message(String.format("While database deleting error : %s", e.getMessage()))
                     .build();
         }
+    }
+
+    @Override
+    public ResponseDto<Page<LoanerDto>> getAllByPage(Integer page, Integer size) {
+        Page<LoanerDto> map = this.loanerRepository.findAllByPage(PageRequest.of(page, size)).map(this.loanerMapper::toDto);
+        if (map.isEmpty()) {
+            return  ResponseDto.<Page<LoanerDto>>builder()
+                    .code(-1)
+                    .message("Loaners are not found!")
+                    .build();
+        }
+        return ResponseDto.<Page<LoanerDto>>builder()
+                .message("OK")
+                .success(true)
+                .data(map)
+                .build();
+
     }
 }

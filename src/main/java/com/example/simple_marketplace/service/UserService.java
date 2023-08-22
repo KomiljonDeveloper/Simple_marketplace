@@ -147,7 +147,7 @@ public class UserService implements SimpleCrud<UserDto,Integer> {
         Page<UserDto> map = userPage.map(this.userMapper::toDto);
         if (map.isEmpty()) {
             return ResponseDto.<Page<UserDto>>builder()
-                    .message("Error in pagination!")
+                    .message("Users not found!")
                     .code(-5)
                     .build();
         }

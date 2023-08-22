@@ -6,6 +6,8 @@ import com.example.simple_marketplace.dto.SimpleCrud;
 import com.example.simple_marketplace.repository.ReportsRepository;
 import com.example.simple_marketplace.service.mapper.ReportsMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -109,5 +111,23 @@ public class ReportsService implements SimpleCrud<ReportsDto,Integer> {
                     .build();
 
         }
+    }
+
+    @Override
+    public ResponseDto<Page<ReportsDto>> getAllByPage(Integer page, Integer size) {
+        Page<ReportsDto> map = this.reportsRepository.findAllByPage(PageRequest.of(page, size)).map(this.reportsMapper::toDto);
+        if (map.isEmpty()) {
+            return  ResponseDto.<Page<ReportsDto>>builder()
+                    .code(-1)
+                    .message("Reports are not found!")
+                    .build();
+        }
+        return ResponseDto.<Page<ReportsDto>>builder()
+                .message("OK")
+                .success(true)
+                .data(map)
+                .build();
+
+
     }
 }

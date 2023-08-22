@@ -6,7 +6,10 @@ import com.example.simple_marketplace.dto.SimpleCrud;
 import com.example.simple_marketplace.service.ForeignDebtService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("debt/")
@@ -36,5 +39,10 @@ public class ForeignDebtController implements SimpleCrud<ForeignDebtDto,Integer>
     @DeleteMapping("delete/{id}")
     public ResponseDto<ForeignDebtDto> delete(@PathVariable Integer id) {
         return this.foreignDebtService.delete(id);
+    }
+
+    @Override
+    public ResponseDto<Page<ForeignDebtDto>> getAllByPage(Integer page, Integer size) {
+        return this.foreignDebtService.getAllByPage(page, size);
     }
 }

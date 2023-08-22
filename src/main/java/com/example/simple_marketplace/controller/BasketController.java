@@ -5,7 +5,10 @@ import com.example.simple_marketplace.dto.ResponseDto;
 import com.example.simple_marketplace.dto.SimpleCrud;
 import com.example.simple_marketplace.service.BasketService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("basket")
@@ -34,6 +37,14 @@ public record BasketController(BasketService basketService) implements SimpleCru
     public ResponseDto<BasketDto> delete(@PathVariable Integer id) {
         return this.basketService.delete(id);
     }
+
+    @Override
+    @GetMapping("/get-all-page")
+    public ResponseDto<Page<BasketDto>> getAllByPage(@RequestParam Integer page,@RequestParam Integer size) {
+        return this.basketService.getAllByPage(page,size);
+    }
+
+
 }
 
 

@@ -6,6 +6,8 @@ import com.example.simple_marketplace.dto.SimpleCrud;
 import com.example.simple_marketplace.repository.ProductRepository;
 import com.example.simple_marketplace.service.mapper.ProductMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -102,5 +104,21 @@ public class ProductService implements SimpleCrud<ProductDto, Integer> {
                     .message(String.format("While database deleting error : %s", e.getMessage()))
                     .build();
         }
+    }
+
+    @Override
+    public ResponseDto<Page<ProductDto>> getAllByPage(Integer page, Integer size) {
+        Page<ProductDto> map = this.productRepository.findAllByPage(PageRequest.of(page, size)).map(this.productMapper::toDto);
+        if (map.isEmpty()) {
+            return  ResponseDto.<Page<ProductDto>>builder()
+                    .code(-1)
+                    .message("Products are not found!")
+                    .build();
+        }
+        return ResponseDto.<Page<ProductDto>>builder()
+                .message("OK")
+                .success(true)
+                .data(map)
+                .build();
     }
 }

@@ -6,6 +6,8 @@ import com.example.simple_marketplace.dto.SimpleCrud;
 import com.example.simple_marketplace.repository.ForeignDebtRepository;
 import com.example.simple_marketplace.service.mapper.ForeignDebtMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -101,5 +103,21 @@ public class ForeignDebtService implements SimpleCrud<ForeignDebtDto, Integer> {
                     .code(-3)
                     .build();
         }
+    }
+
+    @Override
+    public ResponseDto<Page<ForeignDebtDto>> getAllByPage(Integer page, Integer size) {
+        Page<ForeignDebtDto> map = this.foreignDebtRepository.findAllByPage(PageRequest.of(page, size)).map(this.foreignDebtMapper::toDto);
+        if (map.isEmpty()) {
+            return  ResponseDto.<Page<ForeignDebtDto>>builder()
+                    .code(-1)
+                    .message("Debts are not found!")
+                    .build();
+        }
+        return ResponseDto.<Page<ForeignDebtDto>>builder()
+                .message("OK")
+                .success(true)
+                .data(map)
+                .build();
     }
 }

@@ -6,7 +6,10 @@ import com.example.simple_marketplace.dto.SimpleCrud;
 import com.example.simple_marketplace.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("product/")
@@ -35,5 +38,11 @@ public class ProductController implements SimpleCrud<ProductDto,Integer> {
     @DeleteMapping("delete/{id}")
     public ResponseDto<ProductDto> delete(@PathVariable Integer id) {
         return this.productService.delete(id);
+    }
+
+    @Override
+    @GetMapping("/get-all-page")
+    public ResponseDto<Page<ProductDto>> getAllByPage(@RequestParam Integer page,@RequestParam Integer size) {
+        return this.productService.getAllByPage(page,size);
     }
 }
