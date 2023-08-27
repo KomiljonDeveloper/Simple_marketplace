@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.awt.*;
 import java.util.List;
+import java.util.Map;
 
 @RequestMapping("users")
 @RestController
@@ -48,6 +49,11 @@ public record UserController(UserService userService) implements SimpleCrud<User
        return this.userService.getAllByPage(page,size);
     }
 
+
+    @GetMapping("/search-by-basic")
+    public ResponseDto<Page<UserDto>> searchByBasic(@RequestParam Map<String, String> params) {
+        return this.userService.searchByBasic(params);
+    }
 
 
 }

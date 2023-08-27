@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -156,5 +157,37 @@ public class UserService implements SimpleCrud<UserDto,Integer> {
                 .success(true)
                 .data(map)
                 .build();
+    }
+
+
+    public ResponseDto<Page<UserDto>> searchByBasic(Map<String, String> params) {
+        int page  = 0,size = 10;
+        if (params.containsKey("page")){
+            page = Integer.parseInt(params.get("page"));
+        }
+        if (params.containsKey("size")){
+            size = Integer.parseInt(params.get("size"));
+        }
+        Page<UserDto> map = this.userRepository.searchByBasic(
+                params.get("id") == null ? null : Integer.parseInt(params.get("id")),
+                params.get("firstname"),
+                params.get("lastname"),
+                params.get("email"),
+                params.get("username"),
+                PageRequest.of(page, size)
+        ).map(this.userMapper::toDto);
+
+        if (map.isEmpty()){
+            return ResponseDto.<Page<UserDto>>builder()
+                    .message("Users are not found?")
+                    .code(-1)
+                    .build();
+        }
+        return ResponseDto.<Page<UserDto>>builder()
+                .success(true)
+                .message("OK")
+                .data(map)
+                .build();
+
     }
 }

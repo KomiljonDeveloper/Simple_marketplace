@@ -29,15 +29,14 @@ public class User {
     private String firstAddress;
     private String secondAddress;
     private String email;
-    private Integer age;
     private String monthlyPrice;
     @OneToMany
     private List<Loaner> loaners;
     @OneToOne
     private Image imageId;
     private String birthday;
-    private LocalDateTime workingTime;
-    private LocalDateTime workingDays;
+    private Integer workingTime;
+    private Integer workingDays;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;

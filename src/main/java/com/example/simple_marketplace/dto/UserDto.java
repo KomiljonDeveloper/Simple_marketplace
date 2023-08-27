@@ -34,15 +34,14 @@ public class UserDto {
     @Email(message = "This email is invalid!")
     private String email;
     private String secondAddress;
-    private  Integer age;
     @NotNull(message = "Monthly price is cannot be empty or null!")
     private String monthlyPrice;
     private List<LoanerDto> loaners;
     private Image imageId;
     @NotNull(message = "Birthday is cannot be null or empty ")
     private String birthday;
-    private LocalDateTime workingTime;
-    private LocalDateTime workingDays;
+    private Integer workingTime;
+    private Integer workingDays;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private LocalDateTime deletedAt;

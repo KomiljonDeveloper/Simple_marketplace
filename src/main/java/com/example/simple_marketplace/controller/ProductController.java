@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("product/")
@@ -44,5 +45,9 @@ public class ProductController implements SimpleCrud<ProductDto,Integer> {
     @GetMapping("/get-all-page")
     public ResponseDto<Page<ProductDto>> getAllByPage(@RequestParam Integer page,@RequestParam Integer size) {
         return this.productService.getAllByPage(page,size);
+    }
+    @GetMapping("/search-by-basic")
+    public ResponseDto<Page<ProductDto>> searchByBasic(Map<String, String> params) {
+        return this.productService.searchByBasic(params);
     }
 }

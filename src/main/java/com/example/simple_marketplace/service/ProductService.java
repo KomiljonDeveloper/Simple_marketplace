@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -119,6 +120,32 @@ public class ProductService implements SimpleCrud<ProductDto, Integer> {
                 .message("OK")
                 .success(true)
                 .data(map)
+                .build();
+    }
+
+    public ResponseDto<Page<ProductDto>> searchByBasic(Map<String, String> params) {
+        int page  = 0,size = 0;
+        if (params.containsKey("page")){
+            page = Integer.parseInt(params.get("page"));
+        }
+        if (params.containsKey("size")){
+            size = Integer.parseInt(params.get("size"));
+        }
+        Page<ProductDto> productDto = this.productRepository.searchByBasic(
+                params.get("id") == null ? null : Integer.parseInt(params.get("id")),
+                params.get("name"),
+                PageRequest.of(page, size)
+        ).map(this.productMapper::toDto);
+        if (productDto.isEmpty()){
+            return ResponseDto.<Page<ProductDto>>builder()
+                    .code(-1)
+                    .message("Products not found!")
+                    .build();
+        }
+        return ResponseDto.<Page<ProductDto>>builder()
+                .message("oK")
+                .success(true)
+                .data(productDto)
                 .build();
     }
 }
