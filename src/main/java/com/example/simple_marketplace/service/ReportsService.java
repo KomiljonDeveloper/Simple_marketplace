@@ -66,7 +66,7 @@ public class ReportsService implements SimpleCrud<ReportsDto,Integer> {
         try {
             return this.reportsRepository.findByIdAndDeletedAtIsNull(id).map(reports -> {
                 reports.setUpdatedAt(LocalDateTime.now());
-                this.reportsMapper.updateToDtoFromEntity(dto,reports);
+                this.reportsMapper.updateToDtoFromEntity(reports,dto);
                 this.reportsRepository.save(reports);
                 return ResponseDto.<ReportsDto>builder()
                         .message("OK")

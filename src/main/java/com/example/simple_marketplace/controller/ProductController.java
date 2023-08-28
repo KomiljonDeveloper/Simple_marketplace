@@ -3,6 +3,7 @@ package com.example.simple_marketplace.controller;
 import com.example.simple_marketplace.dto.ProductDto;
 import com.example.simple_marketplace.dto.ResponseDto;
 import com.example.simple_marketplace.dto.SimpleCrud;
+import com.example.simple_marketplace.dto.UserDto;
 import com.example.simple_marketplace.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -49,5 +50,9 @@ public class ProductController implements SimpleCrud<ProductDto,Integer> {
     @GetMapping("/search-by-basic")
     public ResponseDto<Page<ProductDto>> searchByBasic(Map<String, String> params) {
         return this.productService.searchByBasic(params);
+    }
+    @GetMapping("/search-by-advanced")
+    public ResponseDto<Page<ProductDto>> searchByAdvanced(@RequestParam Map<String, String> params) {
+        return this.productService.searchByAdvanced(params);
     }
 }

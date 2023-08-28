@@ -7,6 +7,7 @@ import com.example.simple_marketplace.dto.UserDto;
 import com.example.simple_marketplace.modul.User;
 import com.example.simple_marketplace.repository.UserRepository;
 import com.example.simple_marketplace.service.mapper.UserMapper;
+import com.example.simple_marketplace.utils.UserRepositoryImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,54 +19,55 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class UserService implements SimpleCrud<UserDto,Integer> {
+public class UserService implements SimpleCrud<UserDto, Integer> {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final UserRepositoryImpl userRepositoryImpl;
+
     @Override
     public ResponseDto<UserDto> create(UserDto dto) {
-       try {
-           dto.setCreatedAt(LocalDateTime.now());
+        try {
+            dto.setCreatedAt(LocalDateTime.now());
 
 
-           this.userRepository.save(this.userMapper.toEntity(dto));
-        return ResponseDto.<UserDto>builder()
-                .message("OK")
-                .success(true)
-                .data(dto)
-                .build();
-    }
-       catch (Exception e) {
-        return ResponseDto.<UserDto>builder()
-                .message("While database saving error : "+e.getMessage())
-                .code(-3)
-                .build();
+            this.userRepository.save(this.userMapper.toEntity(dto));
+            return ResponseDto.<UserDto>builder()
+                    .message("OK")
+                    .success(true)
+                    .data(dto)
+                    .build();
+        } catch (Exception e) {
+            return ResponseDto.<UserDto>builder()
+                    .message("While database saving error : " + e.getMessage())
+                    .code(-3)
+                    .build();
 
-    }
+        }
     }
 
     @Override
     public ResponseDto<UserDto> get(Integer id) {
         try {
             return this.userRepository.findByIdAndDeletedAtIsNull(id).map(user ->
-            ResponseDto.<UserDto>builder()
-                    .message("OK")
-                    .success(true)
-                    .data(this.userMapper.toDto(user))
-                    .build()).orElse(
-                            ResponseDto.<UserDto>builder()
-                                    .message("User is not found!")
-                                    .code(-1)
-                                    .build()
+                    ResponseDto.<UserDto>builder()
+                            .message("OK")
+                            .success(true)
+                            .data(this.userMapper.toDto(user))
+                            .build()).orElse(
+                    ResponseDto.<UserDto>builder()
+                            .message("User is not found!")
+                            .code(-1)
+                            .build()
 
             );
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return ResponseDto.<UserDto>builder()
-                    .message("While database getting error : "+e.getMessage())
+                    .message("While database getting error : " + e.getMessage())
                     .code(-3)
                     .build();
 
@@ -77,7 +79,7 @@ public class UserService implements SimpleCrud<UserDto,Integer> {
         try {
             return this.userRepository.findByIdAndDeletedAtIsNull(id).map(user -> {
                 user.setUpdatedAt(LocalDateTime.now());
-                this.userMapper.updateToDtoFromEntity(dto,user);
+                this.userMapper.updateToDtoFromEntity(user, dto);
                 this.userRepository.save(user);
                 return ResponseDto.<UserDto>builder()
                         .message("OK")
@@ -90,10 +92,9 @@ public class UserService implements SimpleCrud<UserDto,Integer> {
                             .code(-1)
                             .build()
             );
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return ResponseDto.<UserDto>builder()
-                    .message("While database update error : "+e.getMessage())
+                    .message("While database update error : " + e.getMessage())
                     .code(-3)
                     .build();
 
@@ -117,10 +118,9 @@ public class UserService implements SimpleCrud<UserDto,Integer> {
                             .code(-1)
                             .build()
             );
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return ResponseDto.<UserDto>builder()
-                    .message("While database deleting error : "+e.getMessage())
+                    .message("While database deleting error : " + e.getMessage())
                     .code(-3)
                     .build();
 
@@ -161,11 +161,11 @@ public class UserService implements SimpleCrud<UserDto,Integer> {
 
 
     public ResponseDto<Page<UserDto>> searchByBasic(Map<String, String> params) {
-        int page  = 0,size = 10;
-        if (params.containsKey("page")){
+        int page = 0, size = 10;
+        if (params.containsKey("page")) {
             page = Integer.parseInt(params.get("page"));
         }
-        if (params.containsKey("size")){
+        if (params.containsKey("size")) {
             size = Integer.parseInt(params.get("size"));
         }
         Page<UserDto> map = this.userRepository.searchByBasic(
@@ -177,7 +177,7 @@ public class UserService implements SimpleCrud<UserDto,Integer> {
                 PageRequest.of(page, size)
         ).map(this.userMapper::toDto);
 
-        if (map.isEmpty()){
+        if (map.isEmpty()) {
             return ResponseDto.<Page<UserDto>>builder()
                     .message("Users are not found?")
                     .code(-1)
@@ -190,4 +190,21 @@ public class UserService implements SimpleCrud<UserDto,Integer> {
                 .build();
 
     }
+
+    public ResponseDto<Page<UserDto>> searchByAdvanced(Map<String, String> params) {
+        return Optional.of(this.userRepositoryImpl.advancedSearch(params).map(this.userMapper::toDto)).map(users ->
+                ResponseDto.<Page<UserDto>>builder()
+                        .success(true)
+                        .message("OK")
+                        .data(users)
+                        .build()
+        ).orElse(
+                ResponseDto.<Page<UserDto>>builder()
+                        .message("User is not found!")
+                        .code(-1)
+                        .build());
+
+
+    }
+
 }

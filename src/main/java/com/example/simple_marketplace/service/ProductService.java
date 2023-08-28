@@ -5,6 +5,7 @@ import com.example.simple_marketplace.dto.ResponseDto;
 import com.example.simple_marketplace.dto.SimpleCrud;
 import com.example.simple_marketplace.repository.ProductRepository;
 import com.example.simple_marketplace.service.mapper.ProductMapper;
+import com.example.simple_marketplace.utils.ProductRepositoryImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,12 +13,14 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class ProductService implements SimpleCrud<ProductDto, Integer> {
     private final ProductMapper productMapper;
     private final ProductRepository productRepository;
+    private final ProductRepositoryImpl productRepositoryImpl;
 
     @Override
     public ResponseDto<ProductDto> create(ProductDto dto) {
@@ -147,5 +150,20 @@ public class ProductService implements SimpleCrud<ProductDto, Integer> {
                 .success(true)
                 .data(productDto)
                 .build();
+    }
+
+    public ResponseDto<Page<ProductDto>> searchByAdvanced(Map<String, String> params) {
+
+       return Optional.of(this.productRepositoryImpl.searchByAdvanced(params).map(this.productMapper::toDto)).map(t ->
+               ResponseDto.<Page<ProductDto>>builder()
+                       .success(true)
+                       .message("OK")
+                       .data(t)
+                       .build()
+
+       ).orElse( ResponseDto.<Page<ProductDto>>builder()
+               .code(-1)
+               .message("Product is not found!")
+               .build());
     }
 }

@@ -14,7 +14,5 @@ public abstract class ReportsMapper {
     @Mapping(target = "deletedAt",ignore = true)
     public abstract ReportsDto toDto(Reports reports);
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    public void updateToDtoFromEntity(ReportsDto dto,@MappingTarget Reports reports) {
-
-    }
+    public abstract void updateToDtoFromEntity(@MappingTarget Reports reports,ReportsDto dto);
 }

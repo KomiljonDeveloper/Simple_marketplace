@@ -18,7 +18,5 @@ public abstract class UserMapper {
     @Mapping(target = "deletedAt",ignore = true)
     public abstract UserDto toDto(User reports);
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    public void updateToDtoFromEntity(UserDto dto,@MappingTarget User reports) {
-
-    }
+    public abstract void updateToDtoFromEntity(@MappingTarget User user,UserDto dto);
 }

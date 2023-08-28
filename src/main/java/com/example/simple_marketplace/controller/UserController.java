@@ -56,4 +56,10 @@ public record UserController(UserService userService) implements SimpleCrud<User
     }
 
 
+    @GetMapping("/search-by-advanced")
+    public ResponseDto<Page<UserDto>> searchByAdvanced(@RequestParam Map<String, String> params) {
+        return this.userService.searchByAdvanced(params);
+    }
+
+
 }
